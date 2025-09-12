@@ -17,6 +17,23 @@ if uploaded_file is not None:
     st.subheader("📋 Yüklenen Profiller")
     st.write(df[['name', 'title', 'skills']])
 
+    # 🔎 Filtreleme & Arama
+    st.subheader("🔎 Profil Arama")
+
+    search_title = st.text_input("İş unvanına göre ara (ör: Data Scientist)")
+    search_skill = st.text_input("Becerilere göre ara (ör: Python)")
+
+    filtered_df = df.copy()
+
+    if search_title:
+        filtered_df = filtered_df[filtered_df['title'].str.contains(search_title, case=False, na=False)]
+
+    if search_skill:
+        filtered_df = filtered_df[filtered_df['skills'].str.contains(search_skill, case=False, na=False)]
+
+    st.write(filtered_df[['name', 'title', 'skills']])
+
+
     # Tüm becerileri topla
     all_skills = [skill.strip() for sublist in df['skills_list'] for skill in sublist]
     skill_counts = Counter(all_skills)
